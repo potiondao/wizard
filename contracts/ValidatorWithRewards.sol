@@ -15,10 +15,10 @@ interface IValidator {
 contract ValidatorWithRewards {
     using SafeERC20 for IERC20;
 
-    IValidator public validator;
-    IERC20 public rewardToken;
-    uint256 public rewardPerByte;
-    uint256 public firstValidationRewardMultiplier;
+    IValidator public immutable validator;
+    IERC20 public immutable rewardToken;
+    uint256 public immutable rewardPerByte;
+    uint256 public immutable firstValidationRewardMultiplier;
     mapping(uint256 => bool) public isSecretValidated;
     mapping(uint256 => bool) public isTokenValidated;
 

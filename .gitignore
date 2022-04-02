@@ -6,6 +6,9 @@
 *.njsproj
 *.sln
 *.sw?
+bin/
+typechain-types/
+node_modules/
 
 # Hardhat files
 cache

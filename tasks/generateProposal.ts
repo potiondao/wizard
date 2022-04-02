@@ -5,10 +5,10 @@ import { task, types } from "hardhat/config";
 import ImmutableCreate2FactoryABI from "../abis/ImmutableCreate2Factory.json";
 import {
     metamorphicContracts,
-    OriginalValidatorAddress,
     TotalRewardsAmountInWei,
-    RewardAmountPerByteValidationInWei,
-    RewardMultiplierForFirstValidation,
+    MerkleRoot,
+    DistributionStartTime,
+    DistributionDuration,
     SaltPadding,
 } from "../scripts/config";
 
@@ -60,26 +60,26 @@ task(
         );
 
         //
-        // ValidatorWithRewards proposal
+        // VestedMerkleDistributor proposal
         //
-        const validatorWithRewardsFactory = await hre.ethers.getContractFactory("ValidatorWithRewards");
-        const validatorWithRewardsInterface = validatorWithRewardsFactory.interface;
-        const validatorWithRewardsBytecode = validatorWithRewardsFactory.bytecode;
+        const vestedMerkleDistributorFactory = await hre.ethers.getContractFactory("VestedMerkleDistributor");
+        const vestedMerkleDistributorInterface = vestedMerkleDistributorFactory.interface;
+        const vestedMerkleDistributorBytecode = vestedMerkleDistributorFactory.bytecode;
 
-        const validatorWithRewardsPayload = validatorWithRewardsInterface.encodeDeploy([
-            OriginalValidatorAddress,
+        const vestedMerkleDistributorPayload = vestedMerkleDistributorInterface.encodeDeploy([
+            MerkleRoot,
             tokenDeploymentAddress,
-            RewardAmountPerByteValidationInWei,
-            RewardMultiplierForFirstValidation,
+            DistributionStartTime,
+            DistributionDuration,
         ]);
 
-        const validatorWithRewardsDeployBytecode =
-            validatorWithRewardsBytecode + validatorWithRewardsPayload.substring(2);
+        const vestedMerkleDistributorDeployBytecode =
+        vestedMerkleDistributorBytecode + vestedMerkleDistributorPayload.substring(2);
 
-        const validatorWithRewardsDeploymentAddress = hre.ethers.utils.getCreate2Address(
+        const vestedMerkleDistributorDeploymentAddress = hre.ethers.utils.getCreate2Address(
             metamorphicContractAddress,
             salt,
-            hre.ethers.utils.keccak256(validatorWithRewardsDeployBytecode)
+            hre.ethers.utils.keccak256(vestedMerkleDistributorDeployBytecode)
         );
 
         //
@@ -103,23 +103,23 @@ task(
         console.log("--------------------------------------------------------------------------------\n");
 
         console.log("--------------------------------------------------------------------------------");
-        console.log("[TX2] Parameters for the ValidatorWithRewards Snapshot Proposal");
+        console.log("[TX2] Parameters for the VestedMerkleDistributor Snapshot Proposal");
         console.log(`    Type:                       Contract Interaction`);
         console.log(`    To (address):               ${metamorphicContractAddress}`);
         console.log(`    Value (wei):                0`);
         console.log(`    ABI:                        ["${safeCreate2Prototype}"]`);
         console.log(`    salt (bytes32):             ${salt}`);
-        console.log(`    initializationCode (bytes): ${validatorWithRewardsDeployBytecode}`);
-        console.log(`\nContract will be deployed at address ${validatorWithRewardsDeploymentAddress}`);
+        console.log(`    initializationCode (bytes): ${vestedMerkleDistributorDeployBytecode}`);
+        console.log(`\nContract will be deployed at address ${vestedMerkleDistributorDeploymentAddress}`);
         console.log("--------------------------------------------------------------------------------\n");
 
         console.log("--------------------------------------------------------------------------------");
-        console.log("[TX3] Parameters to mint the rewards to the ValidatorWithRewards contract");
+        console.log("[TX3] Parameters to mint the rewards to the VestedMerkleDistributor contract");
         console.log(`    Type:                       Contract Interaction`);
         console.log(`    To (address):               ${tokenDeploymentAddress}`);
         console.log(`    Value (wei):                0`);
         console.log(`    ABI:                        ["${tokenMintPrototype}"]`);
-        console.log(`    to (address):               ${validatorWithRewardsDeploymentAddress}`);
+        console.log(`    to (address):               ${vestedMerkleDistributorDeploymentAddress}`);
         console.log(`    amount (uint256):           ${totalRewardsAmount.toString()}`);
         console.log("--------------------------------------------------------------------------------\n");
     });

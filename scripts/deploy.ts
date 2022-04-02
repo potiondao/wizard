@@ -21,19 +21,21 @@ async function main() {
 
     console.log("MagicToken deployed to:", magicToken.address);
 
-    const ValidatorWithRewards = await ethers.getContractFactory("ValidatorWithRewards");
-    const validatorWithRewards = await ValidatorWithRewards.deploy(
-        "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+    const blockNum = await ethers.provider.getBlockNumber();
+    const block = await ethers.provider.getBlock(blockNum);
+    const currentTimestamp = block.timestamp;
+
+    const VestedMerkleDistributor = await ethers.getContractFactory("VestedMerkleDistributor");
+    const vestedMerkleDistributor = await VestedMerkleDistributor.deploy(
+        "0x8656b6af7c8b8843ed35442b2d25eb0e47468538926e2726f564fce1b4ce282a",
         magicToken.address,
-        100,
-        2
+        currentTimestamp + 2 * 24 * 3600, // 2 days
+        180 * 24 * 3600 // 180 days
     );
 
-    await validatorWithRewards.deployed();
+    await vestedMerkleDistributor.deployed();
 
-    console.log("ValidatorWithRewards deployed to:", validatorWithRewards.address);
-
-    magicToken.transferOwnership(validatorWithRewards.address);
+    console.log("VestedMerkleDistributor deployed to:", vestedMerkleDistributor.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

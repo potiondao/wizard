@@ -9,7 +9,7 @@ import "hardhat-abi-exporter";
 
 import "./tasks/generateProposal";
 import "./tasks/decodeProposal";
-import "./tasks/calculateRewards";
+import "./tasks/generateMerkleTree";
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
@@ -37,7 +37,7 @@ const config: HardhatUserConfig = {
     abiExporter: {
         path: "./abis",
         runOnCompile: true,
-        only: ["MagicToken", "ValidatorWithRewards"],
+        only: ["MagicToken", "ValidatorWithRewards", "VestedMerkleDistributor"],
         spacing: 2,
         flat: true,
     },

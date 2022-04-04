@@ -12,10 +12,10 @@ contract VestedMerkleDistributor {
 
     event Claim(address indexed account, uint256 total, uint256 count);
 
-    bytes32 public merkleRoot;
-    IERC20 public rewardToken;
-    uint64 public distributionStartTime;
-    uint64 public distributionDuration;
+    bytes32 public immutable merkleRoot;
+    IERC20 public immutable rewardToken;
+    uint64 public immutable distributionStartTime;
+    uint64 public immutable distributionDuration;
 
     mapping(address => uint256) public claimedCount;
 
@@ -53,7 +53,11 @@ contract VestedMerkleDistributor {
         bytes32[] calldata _merkleProof
     ) external {
         require(block.timestamp >= distributionStartTime, "INVALID_TIME");
-        require(readyToClaim(_account, _total, _merkleProof) >= _count, "NO_TOKENS_READY");
+
+        uint256 releasable = readyToClaim(_account, _total, _merkleProof);
+        // don't revert if the requested amount is bigger than what's ready to be claimed
+        if (_count > releasable)
+            _count = releasable;
 
         claimedCount[_account] += _count;
 

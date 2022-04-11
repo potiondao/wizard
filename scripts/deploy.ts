@@ -15,7 +15,7 @@ async function main() {
 
     // We get the contract to deploy
     const MagicToken = await ethers.getContractFactory("MagicToken");
-    const magicToken = await MagicToken.deploy();
+    const magicToken = await MagicToken.deploy('0x0000000000000000000000000000000000000000');
 
     await magicToken.deployed();
 
@@ -29,8 +29,8 @@ async function main() {
     const vestedMerkleDistributor = await VestedMerkleDistributor.deploy(
         "0x8656b6af7c8b8843ed35442b2d25eb0e47468538926e2726f564fce1b4ce282a",
         magicToken.address,
-        currentTimestamp + 2 * 24 * 3600, // 2 days
-        180 * 24 * 3600 // 180 days
+        currentTimestamp + 3600, // 1 hour
+        2 * 24 * 3600 // 2 days
     );
 
     await vestedMerkleDistributor.deployed();

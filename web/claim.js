@@ -8,10 +8,14 @@ let provider;
 window.connect = async function () {
     hideElement('wrong-network');
     hideElement('not-found');
+    hideElement('not-available');
 
-    provider = new ethers.providers.Web3Provider(window.ethereum);
-
-    await provider.send("eth_requestAccounts", []);
+    try {
+        provider = new ethers.providers.Web3Provider(window.ethereum);
+        await provider.send("eth_requestAccounts", []);
+    } catch (e) {
+        return;
+    }
     
     let accounts, response;
 
@@ -26,7 +30,14 @@ window.connect = async function () {
         return;
     }
 
-    const merkleJson = await response.json();
+    let merkleJson;
+    try {
+        merkleJson = await response.json();
+    } catch (e) {
+        showElement('not-available');
+        return;
+    }
+
     const account = accounts[0].toLowerCase();
 
     console.log('Account: ' + account);

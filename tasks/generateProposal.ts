@@ -6,6 +6,7 @@ import ImmutableCreate2FactoryABI from "../abis/ImmutableCreate2Factory.json";
 import {
     metamorphicContracts,
     TotalRewardsAmountInWei,
+    ProposerRewardsInWei,
     MerkleRoot,
     DistributionStartTime,
     DistributionDuration,
@@ -49,7 +50,7 @@ task(
         const tokenInterface = tokenFactory.interface;
         const tokenBytecode = tokenFactory.bytecode;
 
-        const tokenPayload = tokenInterface.encodeDeploy([taskArgs.proposer, taskArgs.multisig]);
+        const tokenPayload = tokenInterface.encodeDeploy([taskArgs.multisig]);
 
         const tokenDeployBytecode = tokenBytecode + tokenPayload.substring(2);
 
@@ -86,6 +87,12 @@ task(
         // Mint rewards to validator contract
         //
         const totalRewardsAmount = BigNumber.from(TotalRewardsAmountInWei);
+
+        //
+        // Mint rewards to proposer
+        //
+        const proposerRewardsAmount = BigNumber.from(ProposerRewardsInWei);
+
         const tokenMintPrototype = tokenInterface.getFunction("mint").format(hre.ethers.utils.FormatTypes.full);
 
         //
@@ -121,5 +128,15 @@ task(
         console.log(`    ABI:                        ["${tokenMintPrototype}"]`);
         console.log(`    to (address):               ${vestedMerkleDistributorDeploymentAddress}`);
         console.log(`    amount (uint256):           ${totalRewardsAmount.toString()}`);
+        console.log("--------------------------------------------------------------------------------\n");
+
+        console.log("--------------------------------------------------------------------------------");
+        console.log("[TX4] Parameters to mint the rewards to the proposer");
+        console.log(`    Type:                       Contract Interaction`);
+        console.log(`    To (address):               ${tokenDeploymentAddress}`);
+        console.log(`    Value (wei):                0`);
+        console.log(`    ABI:                        ["${tokenMintPrototype}"]`);
+        console.log(`    to (address):               ${taskArgs.proposer}`);
+        console.log(`    amount (uint256):           ${proposerRewardsAmount.toString()}`);
         console.log("--------------------------------------------------------------------------------\n");
     });

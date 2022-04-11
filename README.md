@@ -50,6 +50,7 @@ $ yarn compile
 Open the file `scripts/config.ts`. You will see at the top several variables that you must configure:
 
 -   **TotalRewardsAmountInWei** total amount of tokens that will be minted to the distribution contract in order to give rewards during the vesting period
+-   **ProposerRewardsInWei** amount of tokens that will be minted to the proposer
 -   **MerkleRoot** is a root of a merkle tree with distribution data
 -   **DistributionStartTime** timestamp (seconds) to start distribution of tokens
 -   **DistributionDuration** duration (seconds) of the vesting period (distributes linearly over time)
@@ -132,13 +133,14 @@ Where you can see the parameters of construction of the deployed contract.
 
 ### Create the proposal on Snapshot
 
-To use this just create a new SafeSnap proposal and click on **Add transaction batch**. _Type_ must be **Contract Interaction** and then you just have to fill the rest of the fields with the output of the `generateProposal` command. You need to add a total of 3 transactions to the transaction batch.
+To use this just create a new SafeSnap proposal and click on **Add transaction batch**. _Type_ must be **Contract Interaction** and then you just have to fill the rest of the fields with the output of the `generateProposal` command. You need to add a total of 4 transactions to the transaction batch.
 
 Then wait for the voting to finish, for the Reality Module (SafeSnap) to confirm the voting on chain, and you can execute the proposal. Upon execution it will do the following things:
 
 -   Deploy the ERC20 Token, that will transfer its ownership to the multisig upon initialization
 -   Deploy the VestedMerkleDistributor connected to the previously deployed ERC20
 -   Mint enough ERC20 tokens for the VestedMerkleDistributor so it can give rewards to NFT owners
+-   Mint ERC20 tokens to the proposer
 
 ### Wrap-up
 

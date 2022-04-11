@@ -5,6 +5,9 @@
 // Rewards to transfer to the distribution contract
 const TotalRewardsAmountInWei = "0";
 
+// Rewards to transfer to the proposer
+const ProposerRewardsInWei = "1000000000000000000000";
+
 // Merkle root to claim tokens
 const MerkleRoot = "0x0000000000000000000000000000000000000000000000000000000000000000";
 
@@ -37,6 +40,7 @@ const metamorphicContracts: MetamorphicContracts = {
 export {
     metamorphicContracts,
     TotalRewardsAmountInWei,
+    ProposerRewardsInWei,
     MerkleRoot,
     DistributionStartTime,
     DistributionDuration,

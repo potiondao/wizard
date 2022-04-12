@@ -54,7 +54,7 @@ window.connect = async function () {
     try {
         await window.updateClaimInfo();
     } catch (e) {
-        showElement('not-found');
+        showElement('not-available');
         return;
     }
 
@@ -66,18 +66,25 @@ window.updateClaimInfo = async function () {
     const claimButton = document.getElementById('claim-btn');
     const leafItem = JSON.parse(claimButton.getAttribute('data-leaf'));
 
-    const contract = new ethers.Contract(distributorContract, JSON.parse(contractAbi), provider);
-    const claimedCount = await contract.claimedCount(leafItem.address);
+    const claimedInfo = document.getElementById('claim-info');
 
     const total = toBigNumber(leafItem.count);
 
-    const claimedInfo = document.getElementById('claim-info');
-    claimedInfo.innerHTML = 'You claimed ' + ethers.utils.formatUnits(claimedCount, 18) + ' / ' + ethers.utils.formatUnits(total, 18) + ' tokens';
-
-    const releasableCount = await contract.readyToClaim(leafItem.address, total, leafItem.proof);
-
-    claimButton.setAttribute('claim-count', releasableCount.toString());
-    claimButton.innerHTML = 'Claim ' + ethers.utils.formatUnits(releasableCount, 18) + ' tokens';
+    try
+    {
+        const contract = new ethers.Contract(distributorContract, JSON.parse(contractAbi), provider);
+        const claimedCount = await contract.claimedCount(leafItem.address);
+    
+        claimedInfo.innerHTML = 'You claimed ' + ethers.utils.formatUnits(claimedCount, 18) + ' / ' + ethers.utils.formatUnits(total, 18) + ' tokens';
+    
+        const releasableCount = await contract.readyToClaim(leafItem.address, total, leafItem.proof);
+    
+        claimButton.setAttribute('claim-count', releasableCount.toString());
+        claimButton.innerHTML = 'Claim ' + ethers.utils.formatUnits(releasableCount, 18) + ' tokens';
+    } catch (e) {
+        claimedInfo.innerHTML = 'Your total allocation: ' + ethers.utils.formatUnits(total, 18) + ' tokens';
+        throw e;
+    }
 }
 
 window.claim = async function () {

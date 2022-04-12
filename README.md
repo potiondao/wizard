@@ -94,7 +94,7 @@ $ npx hardhat --network <network_name> generateProposal --proposer <proposer_wal
 The script will output the proposals with the following format:
 
 ```
-    [TX1] Parameters for the MagicToken Snapshot Proposal
+    [TX1] Parameters for the PotionToken Snapshot Proposal
     Type:                       Contract Interaction
     To (address):               0x000000000063b99B8036c31E91c64fC89bFf9ca7
     Value (wei):                0
@@ -119,14 +119,14 @@ $ npx hardhat --network <network_name> decodeProposal --contract <contract_name>
 ```
 
 -   **network_name** is the name of the network that the proposal was generated for
--   **contract_name** is the contract name of the contract that the proposal will deploy: either _MagicToken_ or _VestedMerkleDistributor_
+-   **contract_name** is the contract name of the contract that the proposal will deploy: either _PotionToken_ or _VestedMerkleDistributor_
 -   **proposal_bytecode** is the initialization bytecode of the proposal
 
 The output of the command should be something like:
 
 ```
 [DECODED PROPOSAL]
-MagicToken::constructor(address proposer = 0xab5400b26149A3fF5918EFCdeB2C37903042E9ee, address multisig = 0x01547Ef97f9140dbDF5ae50f06B77337B95cF4BB)
+PotionToken::constructor(address proposer = 0xab5400b26149A3fF5918EFCdeB2C37903042E9ee, address multisig = 0x01547Ef97f9140dbDF5ae50f06B77337B95cF4BB)
 ```
 
 Where you can see the parameters of construction of the deployed contract.

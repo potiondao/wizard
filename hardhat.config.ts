@@ -37,7 +37,7 @@ const config: HardhatUserConfig = {
     abiExporter: {
         path: "./abis",
         runOnCompile: true,
-        only: ["MagicToken", "ValidatorWithRewards", "VestedMerkleDistributor"],
+        only: ["PotionToken", "ValidatorWithRewards", "VestedMerkleDistributor"],
         spacing: 2,
         flat: true,
     },

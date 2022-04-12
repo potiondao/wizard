@@ -14,12 +14,12 @@ async function main() {
     // await hre.run('compile');
 
     // We get the contract to deploy
-    const MagicToken = await ethers.getContractFactory("MagicToken");
-    const magicToken = await MagicToken.deploy('0x0000000000000000000000000000000000000000');
+    const PotionToken = await ethers.getContractFactory("PotionToken");
+    const potionToken = await PotionToken.deploy('0x0000000000000000000000000000000000000000');
 
-    await magicToken.deployed();
+    await potionToken.deployed();
 
-    console.log("MagicToken deployed to:", magicToken.address);
+    console.log("PotionToken deployed to:", potionToken.address);
 
     const blockNum = await ethers.provider.getBlockNumber();
     const block = await ethers.provider.getBlock(blockNum);
@@ -28,7 +28,7 @@ async function main() {
     const VestedMerkleDistributor = await ethers.getContractFactory("VestedMerkleDistributor");
     const vestedMerkleDistributor = await VestedMerkleDistributor.deploy(
         "0x8656b6af7c8b8843ed35442b2d25eb0e47468538926e2726f564fce1b4ce282a",
-        magicToken.address,
+        potionToken.address,
         currentTimestamp + 3600, // 1 hour
         2 * 24 * 3600 // 2 days
     );

@@ -15,7 +15,7 @@ import {
 
 task(
     "generateProposal",
-    "Generates a SafeSnap proposal to deploy the MagicToken contract and to deploy the ValidatorWithRewards contract"
+    "Generates a SafeSnap proposal to deploy the PotionToken contract and to deploy the ValidatorWithRewards contract"
 )
     .addParam("proposer", "The wallet address of the proposer", undefined, types.string, false)
     .addParam("multisig", "The address of the multisig wallet", undefined, types.string, false)
@@ -44,9 +44,9 @@ task(
         const salt = taskArgs.multisig + SaltPadding;
 
         //
-        // MagicToken proposal
+        // PotionToken proposal
         //
-        const tokenFactory = await hre.ethers.getContractFactory("MagicToken");
+        const tokenFactory = await hre.ethers.getContractFactory("PotionToken");
         const tokenInterface = tokenFactory.interface;
         const tokenBytecode = tokenFactory.bytecode;
 
@@ -99,7 +99,7 @@ task(
         // Proposals
         //
         console.log("--------------------------------------------------------------------------------");
-        console.log("[TX1] Parameters for the MagicToken Snapshot Proposal");
+        console.log("[TX1] Parameters for the PotionToken Snapshot Proposal");
         console.log(`    Type:                       Contract Interaction`);
         console.log(`    To (address):               ${metamorphicContractAddress}`);
         console.log(`    Value (wei):                0`);

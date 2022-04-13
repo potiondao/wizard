@@ -3,7 +3,7 @@
  */
 
 // Rewards to transfer to the distribution contract
-const TotalRewardsAmountInWei = "0";
+const TotalRewardsAmountInWei = "30000000000000372194400000";
 
 // Rewards to transfer to the proposer
 const ProposerRewardsInWei = "1000000000000000000000";

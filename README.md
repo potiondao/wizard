@@ -126,7 +126,7 @@ The output of the command should be something like:
 
 ```
 [DECODED PROPOSAL]
-PotionToken::constructor(address proposer = 0xab5400b26149A3fF5918EFCdeB2C37903042E9ee, address multisig = 0x01547Ef97f9140dbDF5ae50f06B77337B95cF4BB)
+PotionToken::constructor(address multisig = 0x01547Ef97f9140dbDF5ae50f06B77337B95cF4BB)
 ```
 
 Where you can see the parameters of construction of the deployed contract.

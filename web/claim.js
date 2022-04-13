@@ -46,6 +46,7 @@ window.connect = async function () {
 async function showAccountInfo(accounts) {
     hideElement('not-found');
     hideElement('not-available');
+    hideElement('claim-info');
 
     const account = accounts[0].toLowerCase();
 
@@ -75,6 +76,7 @@ async function showAccountInfo(accounts) {
 
 window.updateClaimInfo = async function () {
     hideElement('claim-btn');
+    showElement('claim-info');
 
     const claimButton = document.getElementById('claim-btn');
     const leafItem = JSON.parse(claimButton.getAttribute('data-leaf'));

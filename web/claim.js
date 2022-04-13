@@ -51,6 +51,11 @@ async function showAccountInfo(accounts) {
 
     console.log('Account: ' + account);
 
+    const accountInfo = document.getElementById('account-info');
+    accountInfo.innerHTML = 'Account: ' + account;
+
+    showElement('account-info');
+
     const leafItem = merkleJson.treeLeaves.filter(l => l.address.toLowerCase() === account)[0];
     if (!leafItem) {
         showElement('not-found');

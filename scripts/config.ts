@@ -9,7 +9,7 @@ const TotalRewardsAmountInWei = "0";
 const ProposerRewardsInWei = "1000000000000000000000";
 
 // Merkle root to claim tokens
-const MerkleRoot = "0x0000000000000000000000000000000000000000000000000000000000000000";
+const MerkleRoot = "0x7a29625a0d9ed5fdb1f439d99dd91d7c0082d47e25b05e87d9eceae84d00e493";
 
 // Timestamp to start token distribution
 const DistributionStartTime = 1651363200;

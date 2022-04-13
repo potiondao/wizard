@@ -1,5 +1,5 @@
 import "@nomiclabs/hardhat-ethers";
-import { BigNumber } from "ethers";
+import { BigNumber, utils } from "ethers";
 import { task, types } from "hardhat/config";
 const fs = require('fs').promises;
 const treeHelper = require('../lib/tree');
@@ -16,11 +16,10 @@ task(
         const users: any = JSON.parse(usersText);
 
         var totalTokens: BigNumber = BigNumber.from(0);
-        const WeiPerToken: BigNumber = BigNumber.from(10).pow(18);
 
         // enrich users with the proper token count
         users.forEach((u: any) => {
-            const tokenCount: BigNumber = BigNumber.from(u.tokens).mul(WeiPerToken);
+            const tokenCount: BigNumber = utils.parseUnits(u.tokens.toString(), 18);
             u.count = tokenCount;
             totalTokens = totalTokens.add(tokenCount);
         });

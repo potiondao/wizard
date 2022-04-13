@@ -1,13 +1,12 @@
-const merkleTreeUrl = 'https://ipfs.io/ipfs/_json_file_';
+const merkleTreeUrl = 'alloc.json';
 const distributorContract = '0x0000000000000000000000000000000000000000';
 const expectedChainId = 1;
 const contractAbi = '[{"inputs":[{"internalType":"bytes32","name":"_merkleRoot","type":"bytes32"},{"internalType":"address","name":"_rewardToken","type":"address"},{"internalType":"uint64","name":"_distributionStartTime","type":"uint64"},{"internalType":"uint64","name":"_distributionDuration","type":"uint64"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"account","type":"address"},{"indexed":false,"internalType":"uint256","name":"total","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"count","type":"uint256"}],"name":"Claim","type":"event"},{"inputs":[{"internalType":"address","name":"_account","type":"address"},{"internalType":"uint256","name":"_total","type":"uint256"},{"internalType":"uint256","name":"_count","type":"uint256"},{"internalType":"bytes32[]","name":"_merkleProof","type":"bytes32[]"}],"name":"claim","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"claimedCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"distributionDuration","outputs":[{"internalType":"uint64","name":"","type":"uint64"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"distributionStartTime","outputs":[{"internalType":"uint64","name":"","type":"uint64"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"merkleRoot","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"},{"internalType":"uint256","name":"_total","type":"uint256"},{"internalType":"bytes32[]","name":"_merkleProof","type":"bytes32[]"}],"name":"readyToClaim","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"rewardToken","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"stateMutability":"view","type":"function"}]';
 
-let provider;
+let provider, merkleJson;
 
 window.connect = async function () {
     hideElement('wrong-network');
-    hideElement('not-found');
     hideElement('not-available');
 
     try {
@@ -30,13 +29,23 @@ window.connect = async function () {
         return;
     }
 
-    let merkleJson;
     try {
         merkleJson = await response.json();
     } catch (e) {
         showElement('not-available');
         return;
     }
+
+    provider.provider.on('accountsChanged', showAccountInfo);
+
+    await showAccountInfo(accounts);
+
+    hideElement('connect-btn');
+};
+
+async function showAccountInfo(accounts) {
+    hideElement('not-found');
+    hideElement('not-available');
 
     const account = accounts[0].toLowerCase();
 
@@ -57,12 +66,11 @@ window.connect = async function () {
         showElement('not-available');
         return;
     }
-
-    hideElement('connect-btn');
-    showElement('claim-btn');
-};
+}
 
 window.updateClaimInfo = async function () {
+    hideElement('claim-btn');
+
     const claimButton = document.getElementById('claim-btn');
     const leafItem = JSON.parse(claimButton.getAttribute('data-leaf'));
 
@@ -85,6 +93,8 @@ window.updateClaimInfo = async function () {
         claimedInfo.innerHTML = 'Your total allocation: ' + ethers.utils.formatUnits(total, 18) + ' tokens';
         throw e;
     }
+
+    showElement('claim-btn');
 }
 
 window.claim = async function () {

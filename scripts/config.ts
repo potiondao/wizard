@@ -2,18 +2,20 @@
  * Change the default configuration here.
  */
 
-// Address of the original validator contract
-const OriginalValidatorAddress = "0x0000000000000000000000000000000000000000";
+// Rewards to transfer to the distribution contract
+const TotalRewardsAmountInWei = "30000000000000372194400000";
 
-// Reward amount for each byte of a secret piece of the NFT
-const RewardAmountPerByteValidationInWei = "1000000000000000000"; // 1 Token
+// Rewards to transfer to the proposer
+const ProposerRewardsInWei = "1000000000000000000000";
 
-// Multiplier to apply to the reward amount for the first validation
-// of a piece of secret
-const RewardMultiplierForFirstValidation = 2;
+// Merkle root to claim tokens
+const MerkleRoot = "0x7a29625a0d9ed5fdb1f439d99dd91d7c0082d47e25b05e87d9eceae84d00e493";
 
-// Total amount of tokens to mint to the validator contract for rewards
-const TotalRewardsAmountInWei = "200000000000000000000000"; // 200000 Tokens
+// Timestamp to start token distribution
+const DistributionStartTime = 1651363200;
+
+// Duration of the token distribution
+const DistributionDuration = 90 * 24 * 3600;
 
 // Contract addresses are deterministic. Change this value if you need to
 // generate different addresses, for example if the calculated addresses
@@ -37,9 +39,10 @@ const metamorphicContracts: MetamorphicContracts = {
 
 export {
     metamorphicContracts,
-    OriginalValidatorAddress,
     TotalRewardsAmountInWei,
-    RewardAmountPerByteValidationInWei,
-    RewardMultiplierForFirstValidation,
+    ProposerRewardsInWei,
+    MerkleRoot,
+    DistributionStartTime,
+    DistributionDuration,
     SaltPadding,
 };

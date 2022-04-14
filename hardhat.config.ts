@@ -9,7 +9,7 @@ import "hardhat-abi-exporter";
 
 import "./tasks/generateProposal";
 import "./tasks/decodeProposal";
-import "./tasks/calculateRewards";
+import "./tasks/generateMerkleTree";
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
@@ -25,7 +25,7 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 // Go to https://hardhat.org/config/ to learn more
 
 const config: HardhatUserConfig = {
-    solidity: "0.8.4",
+    solidity: "0.8.13",
     networks: {
         rinkeby: {
             url: "https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
@@ -37,7 +37,7 @@ const config: HardhatUserConfig = {
     abiExporter: {
         path: "./abis",
         runOnCompile: true,
-        only: ["MagicToken", "ValidatorWithRewards"],
+        only: ["PotionToken", "ValidatorWithRewards", "VestedMerkleDistributor"],
         spacing: 2,
         flat: true,
     },

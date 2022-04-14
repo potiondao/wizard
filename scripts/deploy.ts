@@ -14,26 +14,28 @@ async function main() {
     // await hre.run('compile');
 
     // We get the contract to deploy
-    const MagicToken = await ethers.getContractFactory("MagicToken");
-    const magicToken = await MagicToken.deploy();
+    const PotionToken = await ethers.getContractFactory("PotionToken");
+    const potionToken = await PotionToken.deploy('0x0000000000000000000000000000000000000000');
 
-    await magicToken.deployed();
+    await potionToken.deployed();
 
-    console.log("MagicToken deployed to:", magicToken.address);
+    console.log("PotionToken deployed to:", potionToken.address);
 
-    const ValidatorWithRewards = await ethers.getContractFactory("ValidatorWithRewards");
-    const validatorWithRewards = await ValidatorWithRewards.deploy(
-        "0x5FbDB2315678afecb367f032d93F642f64180aa3",
-        magicToken.address,
-        100,
-        2
+    const blockNum = await ethers.provider.getBlockNumber();
+    const block = await ethers.provider.getBlock(blockNum);
+    const currentTimestamp = block.timestamp;
+
+    const VestedMerkleDistributor = await ethers.getContractFactory("VestedMerkleDistributor");
+    const vestedMerkleDistributor = await VestedMerkleDistributor.deploy(
+        "0x8656b6af7c8b8843ed35442b2d25eb0e47468538926e2726f564fce1b4ce282a",
+        potionToken.address,
+        currentTimestamp + 3600, // 1 hour
+        2 * 24 * 3600 // 2 days
     );
 
-    await validatorWithRewards.deployed();
+    await vestedMerkleDistributor.deployed();
 
-    console.log("ValidatorWithRewards deployed to:", validatorWithRewards.address);
-
-    magicToken.transferOwnership(validatorWithRewards.address);
+    console.log("VestedMerkleDistributor deployed to:", vestedMerkleDistributor.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
